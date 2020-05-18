@@ -1,5 +1,5 @@
 package ec.edu.ups.controller;
 
-public class ClipsConection {
+public class FormController {
 
 }

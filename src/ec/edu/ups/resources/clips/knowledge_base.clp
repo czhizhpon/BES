@@ -96,7 +96,7 @@
 	(printout t "nombre:" ?p:person-name " | age:" ?p:age crlf)
 )
 
-(deffunction mean
+(deffunction mean_age
 	(?cl)
 	(bind ?n 0)
 	(bind ?sum 0)
