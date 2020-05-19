@@ -4,28 +4,63 @@
 
 (defclass person
 	(is-a USER)
-	(multislot person-name
+	(slot per_dni
+		(type STRING)
+		(default "NaN")
+	)
+	(multislot per_name
 		(type STRING)
 		(cardinality  1 2)
 		(default "no name")
 	)
-	(multislot person-lastname
+	(multislot per_lastname
 		(type STRING)
 		(cardinality  1 2)
 		(default "no lastname")
 	)
-	(slot age
+	(slot per_age
 		(type NUMBER)
-		(default 5)
+		(default 18)
+	)
+	(multislot per_result
+		(type INTEGER)
+		(cardinality 1 2 3 4)
+		(default 0 0 0 0)
+	)
+	(multislot per_result_question
+		(type INTEGER)
+		(cardinality 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22)
+		(default 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 	)
 )
 
 (defclass teacher
 	(is-a person)
+	(slot tea_teach_time
+		(type INTEGER)
+		(default 0)
+	)
+	(slot tea_investigation_time
+		(type INTEGER)
+		(default 0)
+	)
 )
 
 (defclass student
 	(is-a person)
+	(slot stu_study_time_day
+		(type FLOAT)
+		(default 5)
+	)
+	(slot stu_quantity_subjects
+		(type INTEGER)
+		(default 0)
+	)
+	(slot stu_student_type
+		(type SYMBOL)
+		(default r)
+		(allowed-symbols r i)
+	)
 )
 
 ;----------------------------------------------------------

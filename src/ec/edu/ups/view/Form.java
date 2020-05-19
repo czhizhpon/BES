@@ -1,17 +1,21 @@
 package ec.edu.ups.view;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Form extends JPanel {
 
@@ -35,7 +39,30 @@ public class Form extends JPanel {
 
     private void initComponent() {
 
+	String[] columnNames = new String[] { "Descripción", "Valor" };
+	Object[][] dataTable = new String[][] { { "Baja", "1" },
+		{ "Baja-Media", "2" }, { "Media", "3" }, { "Media-Alta", "4" },
+		{ "Alta", "5" } };
+
 	JPanel mainPanel = new JPanel();
+	JPanel tablePanel = new JPanel(new FlowLayout());
+	DefaultTableModel tableModel = new DefaultTableModel();
+	JTable table = new JTable(tableModel) {
+	    public boolean editCellAt(int row, int column, EventObject e) {
+		return false;
+	    }
+	};
+
+	table.setFocusable(false);
+
+	tableModel.setColumnIdentifiers(columnNames);
+	tableModel.addRow(dataTable[0]);
+	tableModel.addRow(dataTable[1]);
+	tableModel.addRow(dataTable[2]);
+	tableModel.addRow(dataTable[3]);
+	tableModel.addRow(dataTable[4]);
+
+	tablePanel.add(table);
 
 	mainPanel.setLayout(new GridBagLayout());
 	gbcItem.insets = new Insets(10, 10, 10, 10);
@@ -108,6 +135,8 @@ public class Form extends JPanel {
 
 	JScrollPane scrollPane = new JScrollPane(mainPanel);
 	setLayout(new BorderLayout());
+
+	add(tablePanel, BorderLayout.NORTH);
 	add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -128,7 +157,8 @@ public class Form extends JPanel {
     }
 
     private void teacherForm() {
-	addQuestion("Eres mayor de edad  PROFESORRRRXD.");
+	addQuestion(
+		"Eres mayor de edad  lasjdnasjnda ldnsalndsandlsndlnski sccasc.");
 	addQuestion("No se que preguntar.");
 	addQuestion("No se que preguntar.");
 	addQuestion("No se que preguntar.");

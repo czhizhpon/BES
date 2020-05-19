@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
-public class Item extends JFrame {
+public class Item {
 
     private JLabel question;
     private List<JRadioButton> selectors;
     private ButtonGroup radioGroup;
 
     public Item(String question) {
-	this.question = new JLabel(question);
+	this.question = new JLabel("<html><p>" + question + "</p></html>");
 	radioGroup = new ButtonGroup();
 	generateSelectors();
     }
