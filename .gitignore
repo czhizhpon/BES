@@ -2,6 +2,7 @@
 /bin/
 .project
 .classpath
+.settings
 
 # Netbeans
 build.xml
