@@ -43,7 +43,7 @@ public class FormGUI extends JFrame {
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setTitle("BES - Burnout Expert System");
-	setSize(609, 693);
+	setSize(1150, 600);
 	getContentPane().setLayout(new BorderLayout());
 
 	mainPanel = new JPanel(new BorderLayout());
@@ -51,7 +51,7 @@ public class FormGUI extends JFrame {
 
 	mainPanel.add(centerPanel, BorderLayout.CENTER);
 	getContentPane().add(mainPanel, BorderLayout.CENTER);
-	pack();
+//	pack();
 	setLocationRelativeTo(null);
 
     }
@@ -59,7 +59,7 @@ public class FormGUI extends JFrame {
     private void initTabs() {
 	centerPanel = new JPanel(new BorderLayout());
 	tabbedPane = new JTabbedPane();
-	tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+//	tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	tabbedPane.setTabPlacement(JTabbedPane.LEFT);
 	studentForm = new Form('s');
 	teacherForm = new Form('t');

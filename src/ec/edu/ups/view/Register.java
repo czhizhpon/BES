@@ -1,6 +1,7 @@
 package ec.edu.ups.view;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -13,6 +14,7 @@ import javax.swing.JTextField;
 public class Register extends JPanel {
 
     private GridBagConstraints gbc;
+    private Font labelFont;
     private JPanel mainPanel;
     private JTextField dni;
     private JTextField name1;
@@ -49,6 +51,8 @@ public class Register extends JPanel {
 	double wLabel = 0.15;
 	double wCombo = 0.1;
 
+	labelFont = new Font("Verdana", Font.PLAIN, 12);
+
 	gbc.insets = new Insets(5, 5, 5, 5);
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	gbc.anchor = GridBagConstraints.WEST;
@@ -56,6 +60,7 @@ public class Register extends JPanel {
 	gbc.gridx = 0;
 	gbc.gridy = 0;
 	JLabel tagLabel = new JLabel("Cédula:", 11);
+	tagLabel.setFont(labelFont);
 	mainPanel.add(tagLabel, gbc);
 
 	gbc.gridx = 1;
@@ -69,8 +74,10 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	tagLabel = new JLabel("Nombres:", 11);
+	tagLabel.setFont(labelFont);
 	mainPanel.add(tagLabel, gbc);
 
+	gbc.fill = GridBagConstraints.NONE;
 	gbc.weightx = wText / 2;
 	gbc.gridx = 1;
 	mainPanel.add(name1, gbc);
@@ -81,9 +88,12 @@ public class Register extends JPanel {
 	gbc.gridx = 0;
 	gbc.gridy = 2;
 	gbc.weightx = wLabel;
+	gbc.fill = GridBagConstraints.HORIZONTAL;
 	tagLabel = new JLabel("Apellidos:", 11);
+	tagLabel.setFont(labelFont);
 	mainPanel.add(tagLabel, gbc);
 
+	gbc.fill = GridBagConstraints.NONE;
 	gbc.weightx = wText / 2;
 	gbc.gridx = 1;
 	mainPanel.add(lastname1, gbc);
@@ -94,7 +104,9 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.gridx = 0;
 	gbc.gridy = 3;
+	gbc.fill = GridBagConstraints.HORIZONTAL;
 	tagLabel = new JLabel("Edad:", 11);
+	tagLabel.setFont(labelFont);
 	mainPanel.add(tagLabel, gbc);
 
 	gbc.gridx = 1;
@@ -143,6 +155,7 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	JLabel label = new JLabel("Horas de Estudio:", 11);
+	label.setFont(labelFont);
 	gbc.gridy = gbc.gridy + 1;
 	gbc.gridx = 0;
 	mainPanel.add(label, gbc);
@@ -155,6 +168,7 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	label = new JLabel("Cantidad de Materias:", 11);
+	label.setFont(labelFont);
 	gbc.gridy = gbc.gridy + 1;
 	gbc.gridx = 0;
 	mainPanel.add(label, gbc);
@@ -167,6 +181,7 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	label = new JLabel("Tipo de Estudiante:", 11);
+	label.setFont(labelFont);
 	gbc.gridy = gbc.gridy + 1;
 	gbc.gridx = 0;
 	mainPanel.add(label, gbc);
@@ -193,6 +208,7 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	JLabel label = new JLabel("Horas de Docencia:", 11);
+	label.setFont(labelFont);
 	gbc.gridy = gbc.gridy + 1;
 	gbc.gridx = 0;
 	mainPanel.add(label, gbc);
@@ -205,6 +221,7 @@ public class Register extends JPanel {
 	gbc.weightx = wLabel;
 	gbc.fill = GridBagConstraints.HORIZONTAL;
 	label = new JLabel("Horas en Investigación:", 11);
+	label.setFont(labelFont);
 	gbc.gridy = gbc.gridy + 1;
 	gbc.gridx = 0;
 	mainPanel.add(label, gbc);
