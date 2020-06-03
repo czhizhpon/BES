@@ -921,7 +921,7 @@
 
 ; --- Rules for: print some recommendation
 
-(defglobal ?*bo_recomendation*)
+(defglobal ?*bo_recomendation* = "")
 
 (defrule stu-low-bo-recommendation
 	?student <- (object	(is-a student)

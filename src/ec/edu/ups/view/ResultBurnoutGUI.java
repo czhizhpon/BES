@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -29,6 +30,7 @@ public class ResultBurnoutGUI extends JFrame {
 	private JLabel lblTypeDP;
 	private JLabel lblTypePA;
 	private JLabel lblTypeBur;
+	private JTextArea txtAreaRecom;
 
 	/**
 	 * Create the frame.
@@ -142,10 +144,15 @@ public class ResultBurnoutGUI extends JFrame {
 		lblTypePA.setBounds(406, 315, 86, 30);
 		resulPanel.add(lblTypePA);
 
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Verdana", Font.PLAIN, 12));
-		textArea.setBounds(52, 375, 440, 120);
-		resulPanel.add(textArea);
+		txtAreaRecom = new JTextArea();
+		txtAreaRecom.setEditable(false);
+		txtAreaRecom.setFont(new Font("Verdana", Font.PLAIN, 12));
+		txtAreaRecom.setBounds(52, 375, 440, 120);
+		txtAreaRecom.setLineWrap(true);
+		JScrollPane scroll = new JScrollPane(txtAreaRecom);
+		scroll.setSize(375, 120);
+		scroll.setBounds(52, 375, 440, 120);
+		resulPanel.add(scroll);
 
 		JLabel lblNewLabel_1 = new JLabel("Recomendaci\u00F3n:");
 		lblNewLabel_1.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -159,9 +166,11 @@ public class ResultBurnoutGUI extends JFrame {
 		resulPanel.add(lblTypeBur);
 	}
 
-	public void printStudentResults(Student student) {
+	public void printStudentResults(Student student, String recomendation) {
 		this.txtName.setText(student.getName1() + " " + student.getName2());
+		this.txtName.setEditable(false);
 		this.txtLastname.setText(student.getLastname1() + " " + student.getLastname2());
+		this.txtLastname.setEditable(false);
 
 		this.txtBurnoutResult.setText("" + student.getResult()[3]);
 		this.txtBurnoutResult.setEditable(false);
@@ -179,11 +188,15 @@ public class ResultBurnoutGUI extends JFrame {
 		this.txtPA.setEditable(false);
 		this.lblTypePA.setText(getStringType(student.getCatResult()[2]));
 
+		this.txtAreaRecom.setText(recomendation);
+
 	}
 
-	public void printTeacherResults(Teacher teacher) {
+	public void printTeacherResults(Teacher teacher, String recomendation) {
 		this.txtName.setText(teacher.getName1() + " " + teacher.getName2());
+		this.txtName.setEditable(false);
 		this.txtLastname.setText(teacher.getLastname1() + " " + teacher.getLastname2());
+		this.txtLastname.setEditable(false);
 
 		this.txtBurnoutResult.setText("" + teacher.getResult()[3]);
 		this.txtBurnoutResult.setEditable(false);
@@ -201,6 +214,7 @@ public class ResultBurnoutGUI extends JFrame {
 		this.txtPA.setEditable(false);
 		this.lblTypePA.setText(getStringType(teacher.getCatResult()[2]));
 
+		this.txtAreaRecom.setText(recomendation);
 	}
 
 	public String getStringType(char c) {

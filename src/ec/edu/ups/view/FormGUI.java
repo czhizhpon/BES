@@ -82,7 +82,6 @@ public class FormGUI extends JFrame implements ActionListener {
 	private void initTabs() {
 		centerPanel = new JPanel(new BorderLayout());
 		tabbedPane = new JTabbedPane();
-		// tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setTabPlacement(JTabbedPane.LEFT);
 		studentForm = new Form('s');
 		teacherForm = new Form('t');
@@ -110,6 +109,10 @@ public class FormGUI extends JFrame implements ActionListener {
 	}
 
 	private boolean createStudent() {
+		if (isStudentDNIEmpty()) {
+			JOptionPane.showMessageDialog(null, "Ingrese su número de cédula.", "Error", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
 		String dni = this.studentForm.getRegister().getDni().getText();
 		String name1 = this.studentForm.getRegister().getName1().getText();
 		String name2 = this.studentForm.getRegister().getName2().getText();
@@ -167,6 +170,11 @@ public class FormGUI extends JFrame implements ActionListener {
 	}
 
 	private boolean createTeacher() {
+
+		if (isTeacherDNIEmpty()) {
+			JOptionPane.showMessageDialog(null, "Ingrese su número de cédula.", "Error", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
 
 		String dni = this.teacherForm.getRegister().getDni().getText();
 		String name1 = this.teacherForm.getRegister().getName1().getText();
@@ -239,8 +247,12 @@ public class FormGUI extends JFrame implements ActionListener {
 			System.out.println("Resultados: " + Arrays.toString(student.getResult()));
 			System.out.println("Resultados Categorizados: " + Arrays.toString(student.getCatResult()));
 
+			String recomendation = this.formController.getRecomendationResult();
+
 			resultBurnoutGUI.setVisible(true);
-			resultBurnoutGUI.printStudentResults(student);
+			resultBurnoutGUI.printStudentResults(student, recomendation);
+
+			resetStudentForm();
 
 		} catch (CLIPSException e) {
 			JOptionPane.showMessageDialog(null, "No se pudo recuperar al estudiante.", "Error - CLIPS",
@@ -261,8 +273,12 @@ public class FormGUI extends JFrame implements ActionListener {
 			System.out.println("Resultados: " + Arrays.toString(teacher.getResult()));
 			System.out.println("Resultados Categorizados: " + Arrays.toString(teacher.getCatResult()));
 
+			String recomendation = this.formController.getRecomendationResult();
+
 			resultBurnoutGUI.setVisible(true);
-			resultBurnoutGUI.printTeacherResults(teacher);
+			resultBurnoutGUI.printTeacherResults(teacher, recomendation);
+
+			resetTeacherForm();
 
 		} catch (CLIPSException e) {
 			JOptionPane.showMessageDialog(null, "No se pudo recuperar al estudiante.", "Error - CLIPS",
@@ -272,6 +288,61 @@ public class FormGUI extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
 		}
+	}
+
+	private void resetTeacherForm() {
+		this.teacherForm.getRegister().getDni().setText("");
+		this.teacherForm.getRegister().getName1().setText("");
+		this.teacherForm.getRegister().getName2().setText("");
+
+		this.teacherForm.getRegister().getLastname1().setText("");
+		this.teacherForm.getRegister().getLastname2().setText("");
+
+		this.teacherForm.getRegister().getAge().setSelectedItem(18);
+		List<Item> questions = this.teacherForm.getQuestions();
+
+		for (Item item : questions) {
+			item.getRadioSelection().get(0).setSelected(true);
+
+		}
+		this.teacherForm.getRegister().getTeachTime().setSelectedIndex(0);
+		this.teacherForm.getRegister().getInvestigationTime().setSelectedIndex(0);
+	}
+
+	private void resetStudentForm() {
+		this.studentForm.getRegister().getDni().setText("");
+		this.studentForm.getRegister().getName1().setText("");
+		this.studentForm.getRegister().getName2().setText("");
+
+		this.studentForm.getRegister().getLastname1().setText("");
+		this.studentForm.getRegister().getLastname2().setText("");
+
+		this.studentForm.getRegister().getAge().setSelectedItem(18);
+		List<Item> questions = this.studentForm.getQuestions();
+
+		for (Item item : questions) {
+			item.getRadioSelection().get(0).setSelected(true);
+
+		}
+
+		this.studentForm.getRegister().getStudyTime().setSelectedIndex(0);
+		this.studentForm.getRegister().getQuantitySubjects().setSelectedIndex(0);
+		this.studentForm.getRegister().getStudentType().setSelectedItem("Regular");
+
+	}
+
+	private boolean isStudentDNIEmpty() {
+		if (this.studentForm.getRegister().getDni().getText().length() == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isTeacherDNIEmpty() {
+		if (this.teacherForm.getRegister().getDni().getText().length() == 0) {
+			return true;
+		}
+		return false;
 	}
 
 	private void setActionCommands() {
@@ -287,19 +358,20 @@ public class FormGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "est_submit":
-			createStudent();
-			runRules();
-			setStudent();
+			if (createStudent()) {
+				runRules();
+				setStudent();
+			}
 			break;
 
 		case "tea_submit":
-			createTeacher();
-			runRules();
-			setTeacher();
+			if (createTeacher()) {
+				runRules();
+				setTeacher();
+			}
 			break;
 		default:
 			break;
 		}
-
 	}
 }

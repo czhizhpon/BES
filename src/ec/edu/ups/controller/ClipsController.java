@@ -46,6 +46,12 @@ public class ClipsController {
 		return (MultifieldValue) clips.eval(query);
 	}
 
+	public String getAGlobalVariable(String query) throws CLIPSException {
+		String result = clips.eval(query).toString();
+		result = result.substring(1, result.length() - 1);
+		return result;
+	}
+
 	public int getLenInstance(String className) throws CLIPSException {
 		String query = "(find-all-instances((?c " + className + ")) TRUE)";
 		return getAResult(query).size();

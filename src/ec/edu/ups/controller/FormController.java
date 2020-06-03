@@ -63,4 +63,10 @@ public class FormController {
 		return this.teachers.get(teachers.size() - 1);
 	}
 
+	public String getRecomendationResult() throws CLIPSException {
+		String query = "?*bo_recomendation*";
+		String recomendation = this.clipsController.getAGlobalVariable(query);
+		return recomendation;
+	}
+
 }
