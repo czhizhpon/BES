@@ -91,3 +91,7 @@
 =>
 	(printout t "Name[" (nth$ 1 $?n) "] | Age[" ?a "]" crlf)
 )
+
+
+(make-instance id_0105587919 of student(per_name "Cesar" "Eduardo")(per_lastname "Zhizhpon" "Tacuri")(per_age 22)(per_result_question 1 3 2 1 1 1 1 6 5 4 2 3 4 1 1 1 1 1 1 1 1 1 1 1)(stu_study_time_day 19.0 )(stu_quantity_subjects 6)(stu_student_type r))
+
