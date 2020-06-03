@@ -112,6 +112,23 @@
 	(bind ?r (+ ?r (nth$ 21 $?v)))
 )
 
+;--- Function: sum each category
+
+(deffunction sum-category 
+	(?cat ?sum $?v)
+	
+	(loop-for-count (?i 1 (length$ $?v)) do
+		(bind ?aux (nth$ ?i ?v))
+		(if (eq ?aux ?cat)
+			then
+				(bind ?sum (+ ?sum 1))
+			else
+				(bind ?sum ?sum)
+		)
+	)
+	(bind ?sum ?sum)
+)
+
 
 ;--- Rules for: emotional exhaustion
 
@@ -785,4 +802,120 @@
 	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
 )
 
-;
+; --- Rules for: total burnout category
+
+(defrule stu-bo-category
+	?student <- (object	(is-a student)
+							(per_result $?r)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) n)
+		)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind ?sym n)
+
+	(bind ?cantL (sum-category l 0 $?cat))
+	(bind ?cantM (sum-category m 0 $?cat))
+	(bind ?cantH (sum-category h 0 $?cat))
+
+	(if (and
+			(>= ?cantH ?cantM)
+			(>= ?cantH ?cantL))
+		then
+			(bind ?sym h)
+		else
+			(if (>= ?cantM ?cantL)
+				then
+					(bind ?sym m)
+				else
+					(bind ?sym l)
+			)
+	)
+
+	(if (and (eq (nth$ 1 $?cat) h)
+			 (eq (nth$ 2 $?cat) h)
+			 (eq (nth$ 3 $?cat) l))
+		then
+			(bind ?sym h)
+		else
+			(if (and (eq (nth$ 1 $?cat) l)
+					 (eq (nth$ 2 $?cat) l)
+			 		 (eq (nth$ 3 $?cat) h))
+				then
+					(bind ?sym l)
+				else
+					(bind ?sym ?sym)
+			)
+	)
+	
+	(bind $?cat (replace$ $?cat 4 4 ?sym))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-bo-category
+	?teacher <- (object	(is-a teacher)
+							(per_result $?r)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) n)
+		)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind ?sym n)
+
+	(bind ?cantL (sum-category l 0 $?cat))
+	(bind ?cantM (sum-category m 0 $?cat))
+	(bind ?cantH (sum-category h 0 $?cat))
+
+	(if (and
+			(>= ?cantH ?cantM)
+			(>= ?cantH ?cantL))
+		then
+			(bind ?sym h)
+		else
+			(if (>= ?cantM ?cantL)
+				then
+					(bind ?sym m)
+				else
+					(bind ?sym l)
+			)
+	)
+
+	(if (and (eq (nth$ 1 $?cat) h)
+			 (eq (nth$ 2 $?cat) h)
+			 (eq (nth$ 3 $?cat) l))
+		then
+			(bind ?sym h)
+		else
+			(if (and (eq (nth$ 1 $?cat) l)
+					 (eq (nth$ 2 $?cat) l)
+			 		 (eq (nth$ 3 $?cat) h))
+				then
+					(bind ?sym l)
+				else
+					(bind ?sym ?sym)
+			)
+	)
+	
+	(bind $?cat (replace$ $?cat 4 4 ?sym))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+
