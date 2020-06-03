@@ -22,282 +22,259 @@ import javax.swing.table.DefaultTableModel;
 
 public class Form extends JPanel {
 
-    private List<Item> questions;
-    private JButton submit;
-    private GridBagConstraints gbcItem;
-    private Font labelFont;
-    private Border labelBorder;
-    private JPanel mainPanel;
-    private JPanel centerPanel;
-    private JPanel questionPanel;
-    private JPanel tableDescriptionPanel;
-    private Register register;
-    private JPanel topPanel;
+	private List<Item> questions;
+	private JButton submit;
+	private GridBagConstraints gbcItem;
+	private Font labelFont;
+	private Border labelBorder;
+	private JPanel mainPanel;
+	private JPanel centerPanel;
+	private JPanel questionPanel;
+	private JPanel tableDescriptionPanel;
+	private Register register;
+	private JPanel topPanel;
 
-    public Form(char id) {
-	if (id == 's') {
-	    studentForm();
+	public Form(char id) {
+		if (id == 's') {
+			studentForm();
 
-	} else {
-	    teacherForm();
+		} else {
+			teacherForm();
+
+		}
+		initComponent();
 
 	}
-	initComponent();
 
-    }
+	public List<Item> getQuestions() {
+		return questions;
+	}
 
-    public JButton getSubmit() {
-	return submit;
-    }
+	public void setQuestions(List<Item> questions) {
+		this.questions = questions;
+	}
 
-    private void initComponent() {
+	public Register getRegister() {
+		return register;
+	}
 
-	String[][] dataTableItem = { { "Nunca", "0" },
-		{ "Pocas veces al año", "1" },
-		{ "Una vez al mes o menos", "2" },
-		{ "Unas pocas veces al mes", "3" },
-		{ "Una vez a la semana", "4" },
-		{ "Unas pocas veces a la semana", "5" },
-		{ "Todos los días", "6" } };
-	String[] names = { "<html><h4>Descripción</h4></html>",
-		"<html><h3>Valor</h3></html>" };
-	centerPanel = new JPanel();
-	gbcItem = new GridBagConstraints();
-	DefaultTableModel tableModel = new DefaultTableModel() {
+	public void setRegister(Register register) {
+		this.register = register;
+	}
 
-	    @Override
-	    public boolean isCellEditable(int row, int col) {
-		return false;
-	    }
-	};
-	JTable table = new JTable(tableModel);
+	public void setSubmit(JButton submit) {
+		this.submit = submit;
+	}
 
-	tableModel.setDataVector(dataTableItem, names);
+	public JButton getSubmit() {
+		return submit;
+	}
 
-	labelFont = new Font("Verdana", Font.PLAIN, 12);
-	labelBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+	private void initComponent() {
 
-	table.setFont(labelFont);
+		String[][] dataTableItem = { { "Nunca", "0" }, { "Pocas veces al año", "1" }, { "Una vez al mes o menos", "2" },
+				{ "Unas pocas veces al mes", "3" }, { "Una vez a la semana", "4" },
+				{ "Unas pocas veces a la semana", "5" }, { "Todos los días", "6" } };
+		String[] names = { "<html><h4>Descripción</h4></html>", "<html><h3>Valor</h3></html>" };
+		centerPanel = new JPanel();
+		gbcItem = new GridBagConstraints();
+		DefaultTableModel tableModel = new DefaultTableModel() {
 
-	JScrollPane tableScroll = new JScrollPane(table);
+			@Override
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		JTable table = new JTable(tableModel);
 
-	Dimension d = table.getPreferredSize();
-	tableScroll.setPreferredSize(new Dimension(d.width + 297,
-		table.getRowHeight() * dataTableItem.length + 48));
+		tableModel.setDataVector(dataTableItem, names);
 
-	questionPanel = new JPanel(new GridBagLayout());
-	tableDescriptionPanel = new JPanel(new GridBagLayout());
+		labelFont = new Font("Verdana", Font.PLAIN, 12);
+		labelBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 
-	gbcItem.fill = GridBagConstraints.NONE;
-	gbcItem.anchor = GridBagConstraints.CENTER;
-	gbcItem.gridx = 0;
-	gbcItem.gridy = 0;
+		table.setFont(labelFont);
 
-	gbcItem.gridwidth = 8;
-	gbcItem.insets = new InsetsUIResource(10, 10, 10, 10);
-	tableDescriptionPanel.add(tableScroll, gbcItem);
+		JScrollPane tableScroll = new JScrollPane(table);
 
-	gbcItem.fill = GridBagConstraints.BOTH;
-	gbcItem.gridx = 0;
-	gbcItem.gridy = 0;
-	gbcItem.gridwidth = 1;
-	gbcItem.insets = new InsetsUIResource(0, 0, 0, 0);
-	JLabel label = new JLabel("<html><h3>Preguntas:</h3></html>",
-		JLabel.CENTER);
+		Dimension d = table.getPreferredSize();
+		tableScroll.setPreferredSize(new Dimension(d.width + 297, table.getRowHeight() * dataTableItem.length + 48));
 
-	label.setFont(labelFont);
-	label.setBorder(labelBorder);
-	questionPanel.add(label, gbcItem);
+		questionPanel = new JPanel(new GridBagLayout());
+		tableDescriptionPanel = new JPanel(new GridBagLayout());
 
-	gbcItem.gridx = 1;
-	JLabel jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>0</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	gbcItem.gridx = 2;
-	jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>1</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	gbcItem.gridx = 3;
-	jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>2</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	gbcItem.gridx = 4;
-	jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>3</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	gbcItem.gridx = 5;
-	jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>4</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	gbcItem.gridx = 6;
-	jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>5</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	gbcItem.gridx = 7;
-	jlSelector = new JLabel(
-		"<html><h3 style='padding:0px 20px'>6</h3></html>",
-		JLabel.CENTER);
-	jlSelector.setFont(labelFont);
-	jlSelector.setBorder(labelBorder);
-	questionPanel.add(jlSelector, gbcItem);
-
-	int yItem = 1;
-	for (int i = 0; i < questions.size(); i++) {
-	    yItem++;
-	    JLabel question = questions.get(i).getQuestion();
-	    question.setFont(labelFont);
-	    question.setBorder(labelBorder);
-	    gbcItem.gridy = yItem + 1;
-	    gbcItem.gridx = 0;
-	    gbcItem.anchor = GridBagConstraints.WEST;
-	    questionPanel.add(question, gbcItem);
-
-	    for (int j = 0; j < questions.get(i).getSelectors().size(); j++) {
-		gbcItem.gridx = j + 1;
+		gbcItem.fill = GridBagConstraints.NONE;
 		gbcItem.anchor = GridBagConstraints.CENTER;
-		JPanel radioButtonPanel = questions.get(i).getSelectors()
-			.get(j);
-		radioButtonPanel.setBorder(labelBorder);
-		questionPanel.add(radioButtonPanel, gbcItem);
-	    }
-	}
+		gbcItem.gridx = 0;
+		gbcItem.gridy = 0;
 
-	submit = new JButton("<html><h4>Enviar</h4></html>");
-	gbcItem.gridy = gbcItem.gridy + 1;
-	gbcItem.gridx = 0;
-	gbcItem.gridwidth = 8;
-	gbcItem.fill = GridBagConstraints.NONE;
-	gbcItem.anchor = GridBagConstraints.EAST;
-	gbcItem.insets = new InsetsUIResource(10, 10, 10, 10);
+		gbcItem.gridwidth = 8;
+		gbcItem.insets = new InsetsUIResource(10, 10, 10, 10);
+		tableDescriptionPanel.add(tableScroll, gbcItem);
 
-	submit.setFont(labelFont);
-	questionPanel.add(submit, gbcItem);
+		gbcItem.fill = GridBagConstraints.BOTH;
+		gbcItem.gridx = 0;
+		gbcItem.gridy = 0;
+		gbcItem.gridwidth = 1;
+		gbcItem.insets = new InsetsUIResource(0, 0, 0, 0);
+		JLabel label = new JLabel("<html><h3>Preguntas:</h3></html>", JLabel.CENTER);
 
-	mainPanel = new JPanel(new BorderLayout());
-	centerPanel = new JPanel(new BorderLayout());
+		label.setFont(labelFont);
+		label.setBorder(labelBorder);
+		questionPanel.add(label, gbcItem);
 
-	JScrollPane questionScroll = new JScrollPane(questionPanel);
-	questionScroll.getVerticalScrollBar().setUnitIncrement(16);
+		gbcItem.gridx = 1;
+		JLabel jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>0</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
 
-	centerPanel.add(questionScroll, BorderLayout.CENTER);
-	mainPanel.add(centerPanel, BorderLayout.CENTER);
+		gbcItem.gridx = 2;
+		jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>1</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
+
+		gbcItem.gridx = 3;
+		jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>2</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
+
+		gbcItem.gridx = 4;
+		jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>3</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
+
+		gbcItem.gridx = 5;
+		jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>4</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
+
+		gbcItem.gridx = 6;
+		jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>5</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
+
+		gbcItem.gridx = 7;
+		jlSelector = new JLabel("<html><h3 style='padding:0px 20px'>6</h3></html>", JLabel.CENTER);
+		jlSelector.setFont(labelFont);
+		jlSelector.setBorder(labelBorder);
+		questionPanel.add(jlSelector, gbcItem);
+
+		int yItem = 1;
+		for (int i = 0; i < questions.size(); i++) {
+			yItem++;
+			JLabel question = questions.get(i).getQuestion();
+			question.setFont(labelFont);
+			question.setBorder(labelBorder);
+			gbcItem.gridy = yItem + 1;
+			gbcItem.gridx = 0;
+			gbcItem.anchor = GridBagConstraints.WEST;
+			questionPanel.add(question, gbcItem);
+
+			for (int j = 0; j < questions.get(i).getSelectors().size(); j++) {
+				gbcItem.gridx = j + 1;
+				gbcItem.anchor = GridBagConstraints.CENTER;
+				JPanel radioButtonPanel = questions.get(i).getSelectors().get(j);
+				radioButtonPanel.setBorder(labelBorder);
+				questionPanel.add(radioButtonPanel, gbcItem);
+			}
+		}
+
+		submit = new JButton("<html><h4>Enviar</h4></html>");
+		gbcItem.gridy = gbcItem.gridy + 1;
+		gbcItem.gridx = 0;
+		gbcItem.gridwidth = 8;
+		gbcItem.fill = GridBagConstraints.NONE;
+		gbcItem.anchor = GridBagConstraints.EAST;
+		gbcItem.insets = new InsetsUIResource(10, 10, 10, 10);
+
+		submit.setFont(labelFont);
+		questionPanel.add(submit, gbcItem);
+
+		mainPanel = new JPanel(new BorderLayout());
+		centerPanel = new JPanel(new BorderLayout());
+
+		JScrollPane questionScroll = new JScrollPane(questionPanel);
+		questionScroll.getVerticalScrollBar().setUnitIncrement(16);
+
+		centerPanel.add(questionScroll, BorderLayout.CENTER);
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 
 //	JScrollPane scrollPane = new JScrollPane(mainPanel);
-	setLayout(new BorderLayout(10, 10));
+		setLayout(new BorderLayout(10, 10));
 
-	initRegister();
-	add(mainPanel, BorderLayout.CENTER);
-    }
+		initRegister();
+		add(mainPanel, BorderLayout.CENTER);
+	}
 
-    private void addQuestion(String q) {
-	if (this.questions == null)
-	    this.questions = new ArrayList<Item>();
-	this.questions.add(new Item(q));
-    }
+	private void addQuestion(String q) {
+		if (this.questions == null)
+			this.questions = new ArrayList<Item>();
+		this.questions.add(new Item(q));
+	}
 
-    private void initRegister() {
+	private void initRegister() {
 
-	JPanel auxPanel = new JPanel(new GridBagLayout());
-	GridBagConstraints gbc = new GridBagConstraints();
-	gbc.gridx = 0;
-	gbc.insets = new Insets(10, 10, 10, 10);
-	topPanel = new JPanel(new BorderLayout());
-	auxPanel.add(register, gbc);
+		JPanel auxPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.insets = new Insets(10, 10, 10, 10);
+		topPanel = new JPanel(new BorderLayout());
+		auxPanel.add(register, gbc);
 
-	gbc.gridx = 1;
-	auxPanel.add(tableDescriptionPanel, gbc);
+		gbc.gridx = 1;
+		auxPanel.add(tableDescriptionPanel, gbc);
 
-	topPanel.add(new JScrollPane(auxPanel), BorderLayout.CENTER);
-	mainPanel.add(topPanel, BorderLayout.NORTH);
+		topPanel.add(new JScrollPane(auxPanel), BorderLayout.CENTER);
+		mainPanel.add(topPanel, BorderLayout.NORTH);
 
-    }
+	}
 
-    private void studentForm() {
-	register = new Register('s');
-	addQuestion(
-		"<strong>1. Me siento emocionalmente agotado por mis estudios.</strong> ");
-	addQuestion(
-		"<strong>2. Me siento cansado al final de la jornada de estudio.</strong> ");
-	addQuestion(
-		"<strong>3. Me siento fatigado cuando me levanto por la mañana <br>"
-			+ "y tengo que enfrentarme con otro día de estudio.</strong> ");
-	addQuestion(
-		"<strong>4. Fácilmente comprendo cómo se sienten las personas.</strong> ");
-	addQuestion(
-		"<strong>5. Creo que trato a algunas personas como si fuesen objetos <br>"
-			+ "impersonales.</strong> ");
-	addQuestion(
-		"<strong>6. Estar todo el día con otras personas es un esfuerzo.</strong>");
-	addQuestion(
-		"<strong>7. Trato muy eficazmente los problemas de las personas.</strong>");
-	addQuestion(
-		"<strong>8. Me siento “quemado” por mi trabajo académico.</strong>");
-	addQuestion(
-		"<strong>9. Creo que estoy influyendo positivamente con mis estudios en las vidas de<br>"
-			+ "los demás.</strong> ");
-	addQuestion(
-		"<strong>10. Me he vuelto más insensible con la gente desde que estudio esta carrera.</strong>");
-	addQuestion(
-		"<strong>11. Me preocupa el hecho de que estudiar esta carrera me esté endureciendo <br>"
-			+ "emocionalmente.</strong>");
-	addQuestion("<strong>12. Me siento muy activo.</strong> ");
-	addQuestion(
-		"<strong>13. Me siento frustrado en mis estudios.</strong>");
-	addQuestion(
-		"<strong>14. Creo que estoy estudiando demasiado.</strong>");
-	addQuestion(
-		"<strong>15. No me preocupa realmente lo que le ocurre a algunas personas con las <br>"
-			+ "que tengo que interactuar.</strong> ");
-	addQuestion(
-		"<strong>16. Trabajar directamente con personas me produce estrés.</strong>");
-	addQuestion(
-		"<strong>17. Fácilmente puedo crear una atmósfera relajada con las personas con<br>"
-			+ "las que estudio.</strong>");
-	addQuestion(
-		"<strong>18. Me siento estimulado después de estudiar en contacto con personas.</strong>");
-	addQuestion(
-		"<strong>19. He conseguido muchas cosas útiles en mi carrera.</strong>");
-	addQuestion("<strong>20. Me siento acabado.</strong> ");
-	addQuestion(
-		"<strong>21. En mis estudios trato los problemas con mucha calma.</strong> ");
-	addQuestion(
-		"<strong>22. Creo que las personas en mi entorno académico me culpan de algunos  <br>"
-			+ "de sus problemas.</strong> ");
-    }
+	private void studentForm() {
+		register = new Register('s');
+		addQuestion("<strong>1. Me siento emocionalmente agotado por mis estudios.</strong> ");
+		addQuestion("<strong>2. Me siento cansado al final de la jornada de estudio.</strong> ");
+		addQuestion("<strong>3. Me siento fatigado cuando me levanto por la mañana <br>"
+				+ "y tengo que enfrentarme con otro día de estudio.</strong> ");
+		addQuestion("<strong>4. Fácilmente comprendo cómo se sienten las personas.</strong> ");
+		addQuestion(
+				"<strong>5. Creo que trato a algunas personas como si fuesen objetos <br>" + "impersonales.</strong> ");
+		addQuestion("<strong>6. Estar todo el día con otras personas es un esfuerzo.</strong>");
+		addQuestion("<strong>7. Trato muy eficazmente los problemas de las personas.</strong>");
+		addQuestion("<strong>8. Me siento “quemado” por mi trabajo académico.</strong>");
+		addQuestion("<strong>9. Creo que estoy influyendo positivamente con mis estudios en las vidas de<br>"
+				+ "los demás.</strong> ");
+		addQuestion("<strong>10. Me he vuelto más insensible con la gente desde que estudio esta carrera.</strong>");
+		addQuestion("<strong>11. Me preocupa el hecho de que estudiar esta carrera me esté endureciendo <br>"
+				+ "emocionalmente.</strong>");
+		addQuestion("<strong>12. Me siento muy activo.</strong> ");
+		addQuestion("<strong>13. Me siento frustrado en mis estudios.</strong>");
+		addQuestion("<strong>14. Creo que estoy estudiando demasiado.</strong>");
+		addQuestion("<strong>15. No me preocupa realmente lo que le ocurre a algunas personas con las <br>"
+				+ "que tengo que interactuar.</strong> ");
+		addQuestion("<strong>16. Trabajar directamente con personas me produce estrés.</strong>");
+		addQuestion("<strong>17. Fácilmente puedo crear una atmósfera relajada con las personas con<br>"
+				+ "las que estudio.</strong>");
+		addQuestion("<strong>18. Me siento estimulado después de estudiar en contacto con personas.</strong>");
+		addQuestion("<strong>19. He conseguido muchas cosas útiles en mi carrera.</strong>");
+		addQuestion("<strong>20. Me siento acabado.</strong> ");
+		addQuestion("<strong>21. En mis estudios trato los problemas con mucha calma.</strong> ");
+		addQuestion("<strong>22. Creo que las personas en mi entorno académico me culpan de algunos  <br>"
+				+ "de sus problemas.</strong> ");
+	}
 
-    private void teacherForm() {
-	register = new Register('t');
-	addQuestion(
-		"Eres mayor de edad  lasjdnasjnda ldnsalndsandlsndlnski sccasc.");
-	addQuestion("No se que preguntar.");
-	addQuestion("No se que preguntar.");
-	addQuestion("No se que preguntar.");
-	addQuestion("No se que preguntar.");
-	addQuestion("No se que preguntar.");
-	addQuestion("No se que preguntar.");
-    }
+	private void teacherForm() {
+		register = new Register('t');
+		addQuestion("Eres mayor de edad  lasjdnasjnda ldnsalndsandlsndlnski sccasc.");
+		addQuestion("No se que preguntar.");
+		addQuestion("No se que preguntar.");
+		addQuestion("No se que preguntar.");
+		addQuestion("No se que preguntar.");
+		addQuestion("No se que preguntar.");
+		addQuestion("No se que preguntar.");
+	}
 }
