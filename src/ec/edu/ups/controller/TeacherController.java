@@ -5,37 +5,37 @@ import net.sf.clipsrules.jni.CLIPSException;
 
 public class TeacherController {
 
-	private ClipsController clipsController;
+    private ClipsController clipsController;
 
-	public TeacherController(ClipsController clipsController) {
-		this.clipsController = clipsController;
-	}
+    public TeacherController(ClipsController clipsController) {
+        this.clipsController = clipsController;
+    }
 
-	public void createTeacher(Teacher teacher) throws CLIPSException {
-		String query = "";
+    public void createTeacher(Teacher teacher) throws CLIPSException {
+        String query = "";
 
-		clipsController.getClips().eval(query);
-	}
+        clipsController.getClips().eval(query);
+    }
 
-	public Teacher readTeacher(String id) throws CLIPSException {
-		Teacher teacher = new Teacher();
+    public Teacher readTeacher(String id) throws CLIPSException {
+        Teacher teacher = new Teacher();
 
-		String query = "";
+        String query = "";
 
-		clipsController.getClips().eval(query);
-		return teacher;
-	}
+        clipsController.getClips().eval(query);
+        return teacher;
+    }
 
-	public void updateTeacher(Teacher teacher) throws CLIPSException {
-		String query = "";
+    public void updateTeacher(Teacher teacher) throws CLIPSException {
+        String query = "";
 
-		clipsController.getClips().eval(query);
-	}
+        clipsController.getClips().eval(query);
+    }
 
-	public void deleteTeacher(String id) throws CLIPSException {
-		String query = "";
+    public void deleteTeacher(String id) throws CLIPSException {
+        String query = "";
 
-		clipsController.getClips().eval(query);
-	}
+        clipsController.getClips().eval(query);
+    }
 
 }

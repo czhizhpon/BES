@@ -24,19 +24,19 @@
 	)
 	(multislot per_result
 		(type INTEGER)
-		(cardinality 1 4)
-		(default 0 0 0 0)
+		(cardinality 4 4)
+		(default -1 -1 -1 -1)
 	)
 	(multislot per_cat_result
 		(type SYMBOL)
-		(cardinality 1 4)
-		(allowed l m h n)
+		(cardinality 4 4)
+		(allowed-symbols l m h n)
 		(default n n n n)
 	)
 	(multislot per_result_question
 		(type INTEGER)
-		(cardinality 1 22)
-		(default 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+		(cardinality 22 22)
+		(default -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1)
 	)
 )
 
@@ -68,8 +68,6 @@
 		(allowed-symbols r i)
 	)
 )
-
-
 
 ;--- Function: emotional-exhaustion
 
@@ -122,15 +120,18 @@
 						(per_result $?r)
 						(per_result_question $?rq))
 	(test
-		(eq (nth$ 1 $?r) 0)
+		(eq (nth$ 1 $?r) -1)
 	)
 =>
 
 	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
-	
+	(bind $?res (send ?student get-per_result))
+
 	;Add new result
 	(bind ?ee (sum-emotional-exhaustion $?rq))
-	(nth$ 1 (send ?student put-per_result ?ee))
+	(bind $?res (replace$ $?res 1 1 ?ee))
+	
+	(send ?student put-per_result $?res)
 
 	;Print by console for test
 	(bind $?res (send ?student get-per_result))
@@ -142,15 +143,18 @@
 						(per_result $?r)
 						(per_result_question $?rq))
 	(test
-		(eq (nth$ 1 $?r) 0)
+		(eq (nth$ 1 $?r) -1)
 	)
 =>
 
 	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
-	
+	(bind $?res (send ?teacher get-per_result))
+
 	;Add new result
 	(bind ?ee (sum-emotional-exhaustion $?rq))
-	(nth$ 1 (send ?teacher put-per_result ?ee))
+	(bind $?res (replace$ $?res 1 1 ?ee))
+	
+	(send ?teacher put-per_result $?res)
 	
 	;Print by console for test
 	(bind $?res (send ?teacher get-per_result))
@@ -165,15 +169,18 @@
 						(per_result $?r)
 						(per_result_question $?rq))
 	(test
-		(eq (nth$ 2 $?r) 0)
+		(eq (nth$ 2 $?r) -1)
 	)
 =>
 
 	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
-	
+	(bind $?res (send ?student get-per_result))
+
 	;Add new result
 	(bind ?ee (sum-depersonalization $?rq))
-	(nth$ 2 (send ?student put-per_result ?ee))
+	(bind $?res (replace$ $?res 2 2 ?ee))
+	
+	(send ?student put-per_result $?res)
 
 	;Print by console for test
 	(bind $?res (send ?student get-per_result))
@@ -185,15 +192,18 @@
 						(per_result $?r)
 						(per_result_question $?rq))
 	(test
-		(eq (nth$ 2 $?r) 0)
+		(eq (nth$ 2 $?r) -1)
 	)
 =>
 
 	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
+	(bind $?res (send ?teacher get-per_result))
 	
 	;Add new result
 	(bind ?ee (sum-depersonalization $?rq))
-	(nth$ 2 (send ?teacher put-per_result ?ee))
+	(bind $?res (replace$ $?res 2 2 ?ee))
+	
+	(send ?teacher put-per_result $?res)
 	
 	;Print by console for test
 	(bind $?res (send ?teacher get-per_result))
@@ -208,15 +218,18 @@
 						(per_result $?r)
 						(per_result_question $?rq))
 	(test
-		(eq (nth$ 3 $?r) 0)
+		(eq (nth$ 3 $?r) -1)
 	)
 =>
 
 	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
-	
+	(bind $?res (send ?student get-per_result))
+
 	;Add new result
 	(bind ?ee (sum-personal-accomplishment $?rq))
-	(nth$ 3 (send ?student put-per_result ?ee))
+	(bind $?res (replace$ $?res 3 3 ?ee))
+	
+	(send ?student put-per_result $?res)
 
 	;Print by console for test
 	(bind $?res (send ?student get-per_result))
@@ -228,139 +241,548 @@
 						(per_result $?r)
 						(per_result_question $?rq))
 	(test
-		(eq (nth$ 3 $?r) 0)
+		(eq (nth$ 3 $?r) -1)
 	)
 =>
 
 	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
+	(bind $?res (send ?teacher get-per_result))
 	
 	;Add new result
 	(bind ?ee (sum-personal-accomplishment $?rq))
-	(nth$ 3 (send ?teacher put-per_result ?ee))
+	(bind $?res (replace$ $?res 3 3 ?ee))
+	
+	(send ?teacher put-per_result $?res)
 	
 	;Print by console for test
 	(bind $?res (send ?teacher get-per_result))
 	(printout t "Resultado:" $?res " Resultado por pregunta:" $?rq crlf)
 )
 
-(defrule stu-cat-low-burnout
+
+;--- Rules for: total burnout
+
+(defrule stu-cal-total-burnout
 	?student <- (object	(is-a student)
-						(per_result_question $?r)
+						(per_result $?r)
+						(per_result_question $?rq))
+	(test
+		(eq (nth$ 4 $?r) -1)
+	)
+=>
+
+	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
+	(bind $?res (send ?student get-per_result))
+	(bind ?sum 0)
+
+	; Add the total to the fourth position
+	(loop-for-count (?i 1 (length$ $?res)) do
+		(bind ?aux (nth$ ?i ?res))
+		(if (= ?i (length$ $?res))
+			then
+				(bind $?res (replace$ $?res 4 4 ?sum))
+			else
+				(bind ?sum (+ ?sum ?aux))
+		)
+	)
+
+	(send ?student put-per_result $?res)
+
+	;Print by console for test
+	(bind $?res (send ?student get-per_result))
+	(printout t "Resultado:" $?res " Resultado por pregunta:" $?rq crlf)
+)
+
+(defrule tea-cal-total-burnout
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_result_question $?rq))
+	(test
+		(eq (nth$ 4 $?r) -1)
+	)
+=>
+
+	(printout t "Resultado:" $?r " Resultado por pregunta:" $?rq crlf)
+	(bind $?res (send ?teacher get-per_result))
+	(bind ?sum 0)
+
+	; Add the total to the fourth position
+	(loop-for-count (?i 1 (length$ $?res)) do
+		(bind ?aux (nth$ ?i ?res))
+		(if (= ?i (length$ $?res))
+			then
+				(bind $?res (replace$ $?res 4 4 ?sum))
+			else
+				(bind ?sum (+ ?sum ?aux))
+		)
+	)
+
+	(send ?teacher put-per_result $?res)
+
+	;Print by console for test
+	(bind $?res (send ?teacher get-per_result))
+	(printout t "Resultado:" $?res " Resultado por pregunta:" $?rq crlf)
+)
+
+; --- Rules for: Students -> Categorize aspects
+
+; -- Rules for: Emotional Exhaustion
+(defrule stu-ee-low
+	?student <- (object	(is-a student)
+						(per_result $?r)
 						(per_cat_result $?cr))
 	(test
-		(eq (nth$ 1 $?cr) n)
+		(and
+			(eq (nth$ 1 $?cr) n)
+			(>= (nth$ 1 $?r) 0)
+			(<= (nth$ 1 $?r) 18)
+		)
 	)
 =>
-	;Add
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 1 1 l))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
 )
 
-(defrule stu-cat-half-burnout
-
-)
-
-(defrule stu-cat-high-burnout
-
-)
-
-(defrule tea-cat-low-burnout
-
-)
-
-(defrule tea-cat-half-burnout
-
-)
-
-(defrule tea-cat-high-burnout
-
-)
-
-
-;----------------------------------------------------------
-; find-instance
-; find-all-instances
-; do-for-all-instances
-
-(do-for-all-instances ((?p person))
-	(>= ?p:age 18)
-	(printout t "nombre:" ?p:person-name " | age:" ?p:age crlf)
-)
-
-(deffunction mean_age
-	(?cl)
-	(bind ?n 0)
-	(bind ?sum 0)
-	(do-for-all-instances ((?c ?cl)) TRUE
-		(bind ?sum (+ ?sum ?c:age))
-		(bind ?n (+ ?n 1))
+(defrule stu-ee-medium
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 1 $?cr) n)
+			(>= (nth$ 1 $?r) 19)
+			(<= (nth$ 1 $?r) 26)
+		)
 	)
-	(/ ?sum ?n)
-)
-
-
-
-;----------------------------------------------------------
-
-; Crear Instancias.
-(make-instance 
-	czhizhpon_student of student 
-	(per_name "Cesar" "Eduardo")
-	(per_lastname "Zhizhpon" "Tacuri")
-	(per_age 21)
-	(stu_study_time_day 6.0)
-)
-
-(make-instance 
-	mauricio_teacher of teacher 
-	(per_name "Mauricio" "Pepe")
-	(per_lastname "Ramon" "Chavez")
-	(per_age 45)
-	(tea_investigation_time 6.0)
-)
-
-(make-instance 
-	dsarmiento_student of student 
-	(person-name "Douglas" "Bryan")
-	(person-lastname "Sarmiento" "Basurto")
-	(age 20)
-)
-
-;Eliminar instancia
-(unmake-instance [<instance>])
-
-;Guardar instancias
-(save-instances "file_path")
-
-;Cargar instancias
-(load-instances "file_path")
-
-;Imprimir 
-(instances)
-(list-definstances)
-
-;----------------------------------------------------------
-; send print: imprimir todos los valores de las instancias
-(send [czhizhpon_student] print)
-
-; send get: recuperar valores.
-(send [czhizhpon_student] get-age)
-(send [czhizhpon_student] get-person-name)
-(send [czhizhpon_student] get-person-lastname)
-
-; send put: Establecer los valores de una instancia.
-(send [czhizhpon_student] put-age 22)
-
-
-; Recuperar valores multislot.
-(nth$ 1 (send [czhizhpon_student] get-person-name))
-
-
-;----------------------------------------------------------
-; Reglas
-
-(defrule print-age
-	?person <- (object 	(is-a person)
-						(person-name $?n)
-						(age ?a))
 =>
-	(printout t "Name[" (nth$ 1 $?n) "] | Age[" ?a "]" crlf)
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 1 1 m))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
 )
+
+(defrule stu-ee-high
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 1 $?cr) n)
+			(>= (nth$ 1 $?r) 27)
+			(<= (nth$ 1 $?r) 54)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 1 1 h))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+; -- Rules for: Depersonalization
+(defrule stu-dp-low
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 2 $?cr) n)
+			(>= (nth$ 2 $?r) 0)
+			(<= (nth$ 2 $?r) 5)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 2 2 l))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule stu-dp-medium
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 2 $?cr) n)
+			(>= (nth$ 2 $?r) 6)
+			(<= (nth$ 2 $?r) 9)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 2 2 m))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule stu-dp-high
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 2 $?cr) n)
+			(>= (nth$ 2 $?r) 10)
+			(<= (nth$ 2 $?r) 30)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 2 2 h))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+; -- Rules for: Personal Accomplishment
+(defrule stu-pa-low
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 3 $?cr) n)
+			(>= (nth$ 3 $?r) 0)
+			(<= (nth$ 3 $?r) 33)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 3 3 l))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule stu-pa-medium
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 3 $?cr) n)
+			(>= (nth$ 3 $?r) 34)
+			(<= (nth$ 3 $?r) 39)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 3 3 m))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule stu-pa-high
+	?student <- (object	(is-a student)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 3 $?cr) n)
+			(>= (nth$ 3 $?r) 40)
+			(<= (nth$ 3 $?r) 56)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?student get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 3 3 h))
+	
+	(send ?student put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?student get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+
+; --- Rules for: Teachers -> Categorize aspects
+
+; -- Rules for: Emotional Exhaustion
+(defrule tea-ee-low
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 1 $?cr) n)
+			(>= (nth$ 1 $?r) 0)
+			(<= (nth$ 1 $?r) 18)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 1 1 l))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-ee-medium
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 1 $?cr) n)
+			(>= (nth$ 1 $?r) 19)
+			(<= (nth$ 1 $?r) 26)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 1 1 m))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-ee-high
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 1 $?cr) n)
+			(>= (nth$ 1 $?r) 27)
+			(<= (nth$ 1 $?r) 54)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 1 1 h))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+; -- Rules for: Depersonalization
+(defrule tea-dp-low
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 2 $?cr) n)
+			(>= (nth$ 2 $?r) 0)
+			(<= (nth$ 2 $?r) 5)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 2 2 l))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-dp-medium
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 2 $?cr) n)
+			(>= (nth$ 2 $?r) 6)
+			(<= (nth$ 2 $?r) 9)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 2 2 m))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-dp-high
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 2 $?cr) n)
+			(>= (nth$ 2 $?r) 10)
+			(<= (nth$ 2 $?r) 30)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 2 2 h))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+; -- Rules for: Personal Accomplishment
+(defrule tea-pa-low
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 3 $?cr) n)
+			(>= (nth$ 3 $?r) 0)
+			(<= (nth$ 3 $?r) 33)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 3 3 l))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-pa-medium
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 3 $?cr) n)
+			(>= (nth$ 3 $?r) 34)
+			(<= (nth$ 3 $?r) 39)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 3 3 m))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+(defrule tea-pa-high
+	?teacher <- (object	(is-a teacher)
+						(per_result $?r)
+						(per_cat_result $?cr))
+	(test
+		(and
+			(eq (nth$ 3 $?cr) n)
+			(>= (nth$ 3 $?r) 40)
+			(<= (nth$ 3 $?r) 56)
+		)
+	)
+=>
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+	(bind $?cat (send ?teacher get-per_cat_result))
+
+	;Add new category
+	(bind $?cat (replace$ $?cat 3 3 h))
+	
+	(send ?teacher put-per_cat_result $?cat)
+	
+	;Print by console for test
+	(bind $?cat (send ?teacher get-per_cat_result))
+	(printout t "Resultado:" $?r " Categorización:" $?cr crlf)
+)
+
+;

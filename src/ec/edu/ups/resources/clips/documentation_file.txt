@@ -1,0 +1,93 @@
+;----------------------------------------------------------
+; find-instance
+; find-all-instances
+; do-for-all-instances
+
+(do-for-all-instances ((?p person))
+	(>= ?p:age 18)
+	(printout t "nombre:" ?p:person-name " | age:" ?p:age crlf)
+)
+
+(deffunction mean_age
+	(?cl)
+	(bind ?n 0)
+	(bind ?sum 0)
+	(do-for-all-instances ((?c ?cl)) TRUE
+		(bind ?sum (+ ?sum ?c:age))
+		(bind ?n (+ ?n 1))
+	)
+	(/ ?sum ?n)
+)
+
+
+
+;----------------------------------------------------------
+
+; Crear Instancias.
+(make-instance 
+	czhizhpon_student of student 
+	(per_name "Cesar" "Eduardo")
+	(per_lastname "Zhizhpon" "Tacuri")
+	(per_age 21)
+	(stu_study_time_day 6.0)
+    (per_result_question 1 2 3 5 4 3 2 1 4 5 2 3 6 2 1 3 1 2 3 2 1 2)
+)
+
+(make-instance 
+	mauricio_teacher of teacher 
+	(per_name "Mauricio" "Pepe")
+	(per_lastname "Ramon" "Chavez")
+	(per_age 45)
+	(tea_investigation_time 6.0)
+    (per_result_question 6 5 4 3 2 1 4 6 5 1 3 2 6 5 4 1 6 2 5 3 1 2)
+)
+
+(make-instance 
+	dsarmiento_student of student 
+	(per_name "Douglas" "Bryan")
+	(per_lastname  "Sarmiento" "Basurto")
+	(per_age 20)
+    (stu_study_time_day 6.0)
+    (per_result_question 6 5 4 1 2 3 6 2 1 3 4 2 3 6 5 4 2 3 3 6 2 3)
+)
+
+;Eliminar instancia
+(unmake-instance [<instance>])
+
+;Guardar instancias
+(save-instances "file_path")
+
+;Cargar instancias
+(load-instances "file_path")
+
+;Imprimir 
+(instances)
+(list-definstances)
+
+;----------------------------------------------------------
+; send print: imprimir todos los valores de las instancias
+(send [czhizhpon_student] print)
+
+; send get: recuperar valores.
+(send [czhizhpon_student] get-age)
+(send [czhizhpon_student] get-person-name)
+(send [czhizhpon_student] get-person-lastname)
+
+; send put: Establecer los valores de una instancia.
+(send [czhizhpon_student] put-age 22)
+
+
+; Recuperar valores multislot.
+(nth$ 1 (send [czhizhpon_student] get-person-name))
+
+
+;----------------------------------------------------------
+; Reglas
+
+(defrule print-age
+	?person <- (object 	(is-a person)
+						(person-name $?n)
+						(age ?a))
+=>
+	(printout t "Name[" (nth$ 1 $?n) "] | Age[" ?a "]" crlf)
+)
