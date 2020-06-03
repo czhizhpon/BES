@@ -919,3 +919,85 @@
 )
 
 
+; --- Rules for: print some recommendation
+
+(defglobal ?*bo_recomendation*)
+
+(defrule stu-low-bo-recommendation
+	?student <- (object	(is-a student)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) l)
+		)
+=>
+	(bind ?*bo_recomendation* "Su nivel de Burnout es bajo. Recomendación: Tomarse las clases con calma, y tomar descansos entre deberes.")
+
+	(printout t ?*bo_recomendation* crlf)
+
+)
+
+(defrule stu-med-bo-recommendation
+	?student <- (object	(is-a student)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) m)
+		)
+=>
+	(bind ?*bo_recomendation* "Su nivel de Burnout es medio. Recomendación: Considere realizar actividades recreativas y físicas con regularidad sin que afecte sus responsabilidades académicas.")
+
+	(printout t ?*bo_recomendation* crlf)
+
+)
+
+(defrule stu-hig-bo-recommendation
+	?student <- (object	(is-a student)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) h)
+		)
+=>
+	(bind ?*bo_recomendation* "Su nivel de Burnout es alto. Recomendación: Hablar de lo que le preocupa con alguien de confianza; contactar con un especialista es necesario si no desea bajar su rendimiento académico.")
+
+	(printout t ?*bo_recomendation* crlf)
+
+)
+
+(defrule tea-low-bo-recommendation
+	?teacher <- (object	(is-a teacher)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) l)
+		)
+=>
+	(bind ?*bo_recomendation* "Su nivel de Burnout es bajo. Recomendación: Considere tomar descansos cortos entre sus horas de trabajo.")
+
+	(printout t ?*bo_recomendation* crlf)
+
+)
+
+(defrule tea-med-bo-recommendation
+	?teacher <- (object	(is-a teacher)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) m)
+		)
+=>
+	(bind ?*bo_recomendation* "Su nivel de Burnout es medio. Recomendación: Considere realizar actividades extracurriculares con regularidad, además de meditar de vez en cuando.")
+
+	(printout t ?*bo_recomendation* crlf)
+
+)
+
+(defrule tea-hig-bo-recommendation
+	?teacher <- (object	(is-a teacher)
+							(per_cat_result $?cr))
+		(test
+			(eq (nth$ 4 $?cr) h)
+		)
+=>
+	(bind ?*bo_recomendation* "Su nivel de Burnout es alto. Recomendación: Considere consultar con un especialista en su institución; si no se hace tratar podría perjudicar su vida profesional y personal.")
+
+	(printout t ?*bo_recomendation* crlf)
+
+)
+
