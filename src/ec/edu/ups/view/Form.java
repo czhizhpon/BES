@@ -269,12 +269,35 @@ public class Form extends JPanel {
 
 	private void teacherForm() {
 		register = new Register('t');
-		addQuestion("Eres mayor de edad  lasjdnasjnda ldnsalndsandlsndlnski sccasc.");
-		addQuestion("No se que preguntar.");
-		addQuestion("No se que preguntar.");
-		addQuestion("No se que preguntar.");
-		addQuestion("No se que preguntar.");
-		addQuestion("No se que preguntar.");
-		addQuestion("No se que preguntar.");
+		addQuestion("<strong>1. Me siento emocionalmente agotado/a por mi trabajo.</strong> ");
+		addQuestion("<strong>2. Me siento cansado/a al final de la jornada de trabajo.</strong> ");
+		addQuestion("<strong>3. Cuando me levanto por la mañana y me enfrento a otra jornada de trabajo <br>"
+				+ "me siento fatigado/a.</strong> ");
+		addQuestion("<strong>4. Tengo facilidad para comprender como se sienten mis alumnos/as.</strong> ");
+		addQuestion("<strong>5. Creo que estoy tratando a algunos alumnos/as como si fueran objetos <br>"
+				+ "impersonales.</strong> ");
+		addQuestion("<strong>6. Siento que trabajar todo el día con alumnos/as supone un gran esfuerzo <br>"
+				+ "y me cansa.</strong>");
+		addQuestion("<strong>7. Creo que trato con mucha eficacia los problemas de mis alumnos/as.</strong>");
+		addQuestion("<strong>8. Siento que mi trabajo me está desgastando. Me siento quemado/a <br>"
+				+ "por mi trabajo.</strong>");
+		addQuestion("<strong>9. Creo que con mi trabajo estoy influyendo positivamente en la vida <br>"
+				+ "de mis alumnos/as.</strong> ");
+		addQuestion("<strong>10. Me he vuelto más insensible con la gente desde que ejerzo la <br>"
+				+ "profesión de docente.</strong>");
+		addQuestion("<strong>11. Pienso que este trabajo me está endureciendo emocionalmente.</strong>");
+		addQuestion("<strong>12. Me siento con mucha energía en mi trabajo.</strong> ");
+		addQuestion("<strong>13. Me siento frustrado/a en mi trabajo.</strong>");
+		addQuestion("<strong>14. Creo que trabajo demasiado.</strong>");
+		addQuestion("<strong>15. No me preocupa realmente lo que les ocurra a algunos <br>"
+				+ "de mis alumnos/as.</strong> ");
+		addQuestion("<strong>16. Trabajar directamente con alumnos/as me produce estrés.</strong>");
+		addQuestion("<strong>17. Siento que puedo crear con facilidad un clima agradable <br>"
+				+ "con mis alumnos/as.</strong>");
+		addQuestion("<strong>18. Me siento motivado/a después de trabajar en contacto con alumnos/as.</strong>");
+		addQuestion("<strong>19. Creo que consigo muchas cosas valiosas en este trabajo.</strong>");
+		addQuestion("<strong>20. Me siento acabado/a en mi trabajo, al limite de mis posibilidades.</strong> ");
+		addQuestion("<strong>21. En mi trabajo trato los problemas emocionalmente con mucha calma.</strong> ");
+		addQuestion("<strong>22. Creo que los alumnos/as me culpan de algunos de sus problemas.</strong> ");
 	}
 }

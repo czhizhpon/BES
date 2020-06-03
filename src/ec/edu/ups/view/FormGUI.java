@@ -19,6 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import ec.edu.ups.controller.FormController;
 import ec.edu.ups.model.Student;
+import ec.edu.ups.model.Teacher;
 import net.sf.clipsrules.jni.CLIPSException;
 
 public class FormGUI extends JFrame implements ActionListener {
@@ -32,6 +33,8 @@ public class FormGUI extends JFrame implements ActionListener {
 	private JPanel centerPanel;
 	private JPanel topPanel;
 	private JPanel mainPanel;
+
+	private ResultBurnoutGUI resultBurnoutGUI;
 
 	public FormGUI() {
 
@@ -49,6 +52,7 @@ public class FormGUI extends JFrame implements ActionListener {
 		}
 
 		if (startConnectionClips()) {
+			resultBurnoutGUI = new ResultBurnoutGUI();
 			initComponents();
 			setActionCommands();
 		} else {
@@ -154,7 +158,59 @@ public class FormGUI extends JFrame implements ActionListener {
 			this.formController.instanceStudent(student);
 			return true;
 		} catch (CLIPSException e) {
-			JOptionPane.showMessageDialog(null, "No se ha podedo realizar la instancia con CLIPS", "Error - CLIPS",
+			JOptionPane.showMessageDialog(null, "No se ha podido realizar la instancia con CLIPS", "Error - CLIPS",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	private boolean createTeacher() {
+
+		String dni = this.teacherForm.getRegister().getDni().getText();
+		String name1 = this.teacherForm.getRegister().getName1().getText();
+		String name2 = this.teacherForm.getRegister().getName2().getText();
+
+		String lastname1 = this.teacherForm.getRegister().getLastname1().getText();
+		String lastname2 = this.teacherForm.getRegister().getLastname2().getText();
+
+		int age = (int) this.teacherForm.getRegister().getAge().getSelectedItem();
+		int[] result = null;
+		char[] catResult = null;
+
+		List<Item> questions = this.teacherForm.getQuestions();
+		List<Integer> answers = new ArrayList<Integer>();
+
+		for (Item item : questions) {
+			int index = 0;
+			for (JRadioButton selection : item.getRadioSelection()) {
+				if (selection.isSelected()) {
+					answers.add(index);
+				}
+				index++;
+			}
+
+		}
+
+		int[] resultQuestion = new int[answers.size()];
+
+		for (int i = 0; i < answers.size(); i++) {
+			resultQuestion[i] = answers.get(i);
+		}
+
+		double teachTime = Double.parseDouble("" + this.teacherForm.getRegister().getTeachTime().getSelectedItem());
+		double investigationTime = Double
+				.parseDouble("" + this.teacherForm.getRegister().getInvestigationTime().getSelectedItem());
+
+		Teacher teacher = new Teacher(dni, name1, name2, lastname1, lastname2, age, result, catResult, resultQuestion,
+				teachTime, investigationTime);
+
+		try {
+			this.formController.instanceTeacher(teacher);
+			return true;
+		} catch (CLIPSException e) {
+			JOptionPane.showMessageDialog(null, "No se ha podido realizar la instancia con CLIPS", "Error - CLIPS",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -182,6 +238,32 @@ public class FormGUI extends JFrame implements ActionListener {
 
 			System.out.println("Resultados: " + Arrays.toString(student.getResult()));
 			System.out.println("Resultados Categorizados: " + Arrays.toString(student.getCatResult()));
+
+			resultBurnoutGUI.setVisible(true);
+			resultBurnoutGUI.printStudentResults(student);
+
+		} catch (CLIPSException e) {
+			JOptionPane.showMessageDialog(null, "No se pudo recuperar al estudiante.", "Error - CLIPS",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
+		}
+	}
+
+	private void setTeacher() {
+		try {
+			Teacher teacher = this.formController.getTeacherFromClips();
+			System.out.println("Nombre: " + teacher.getName1() + " " + teacher.getName2());
+			System.out.println("Apellidos: " + teacher.getLastname1() + " " + teacher.getLastname2());
+
+			System.out.println("Resultados: " + Arrays.toString(teacher.getResult()));
+			System.out.println("Resultados Categorizados: " + Arrays.toString(teacher.getCatResult()));
+
+			resultBurnoutGUI.setVisible(true);
+			resultBurnoutGUI.printTeacherResults(teacher);
+
 		} catch (CLIPSException e) {
 			JOptionPane.showMessageDialog(null, "No se pudo recuperar al estudiante.", "Error - CLIPS",
 					JOptionPane.ERROR_MESSAGE);
@@ -195,6 +277,10 @@ public class FormGUI extends JFrame implements ActionListener {
 	private void setActionCommands() {
 		this.studentForm.getSubmit().setActionCommand("est_submit");
 		this.studentForm.getSubmit().addActionListener(this);
+
+		this.teacherForm.getSubmit().setActionCommand("tea_submit");
+		this.teacherForm.getSubmit().addActionListener(this);
+
 	}
 
 	@Override
@@ -206,6 +292,11 @@ public class FormGUI extends JFrame implements ActionListener {
 			setStudent();
 			break;
 
+		case "tea_submit":
+			createTeacher();
+			runRules();
+			setTeacher();
+			break;
 		default:
 			break;
 		}
