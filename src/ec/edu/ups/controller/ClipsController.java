@@ -52,6 +52,11 @@ public class ClipsController {
 		return result;
 	}
 
+	public boolean saveInstances(String query) throws CLIPSException {
+		clips.eval(query);
+		return true;
+	}
+
 	public int getLenInstance(String className) throws CLIPSException {
 		String query = "(find-all-instances((?c " + className + ")) TRUE)";
 		return getAResult(query).size();

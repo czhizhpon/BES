@@ -40,6 +40,7 @@ public class ResultBurnoutGUI extends JFrame {
 		setBounds(100, 100, 570, 555);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		setTitle("Resultados del Test");
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

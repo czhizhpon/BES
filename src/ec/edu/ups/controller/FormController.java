@@ -69,4 +69,10 @@ public class FormController {
 		return recomendation;
 	}
 
+	public boolean saveInstances(String path) throws CLIPSException {
+		String query = "(save-instances " + path + ")";
+		this.clipsController.saveInstances(query);
+		return true;
+	}
+
 }

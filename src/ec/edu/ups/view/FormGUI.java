@@ -1,6 +1,9 @@
 package ec.edu.ups.view;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,6 +40,9 @@ public class FormGUI extends JFrame implements ActionListener {
 	private JPanel mainPanel;
 
 	private ResultBurnoutGUI resultBurnoutGUI;
+
+	private JFileChooser chooser;
+	private String choosertitle;
 
 	public FormGUI() {
 
@@ -73,6 +81,17 @@ public class FormGUI extends JFrame implements ActionListener {
 		initTabs();
 
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
+		JButton savebtn = new JButton("<html><h4>Guardar Resultados</h4></html>");
+		savebtn.setActionCommand("save");
+		savebtn.addActionListener(this);
+		JPanel savePanel = new JPanel(new GridBagLayout());
+		GridBagConstraints btnGbc = new GridBagConstraints();
+		btnGbc.insets = new Insets(5, 5, 5, 5);
+		btnGbc.anchor = GridBagConstraints.EAST;
+
+		savePanel.add(savebtn, btnGbc);
+		mainPanel.add(savePanel, BorderLayout.SOUTH);
+
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
 		// pack();
 		setLocationRelativeTo(null);
@@ -110,7 +129,8 @@ public class FormGUI extends JFrame implements ActionListener {
 
 	private boolean createStudent() {
 		if (isStudentDNIEmpty()) {
-			JOptionPane.showMessageDialog(null, "Ingrese su número de cédula.", "Error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese su número de cédula.", "Error - BES",
+					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		String dni = this.studentForm.getRegister().getDni().getText();
@@ -345,6 +365,27 @@ public class FormGUI extends JFrame implements ActionListener {
 		return false;
 	}
 
+	private void saveInstances() {
+		chooser = new JFileChooser();
+		chooser.setDialogTitle("Guardar resultados");
+		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+		chooser.setAcceptAllFileFilterUsed(false);
+		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			String path = chooser.getSelectedFile().getAbsolutePath();
+			try {
+				if (this.formController.saveInstances(path))
+					JOptionPane.showMessageDialog(null, "Se guardó correctamente.", "BES",
+							JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "No se pudo guardar las instancias.", "Error - BES",
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 	private void setActionCommands() {
 		this.studentForm.getSubmit().setActionCommand("est_submit");
 		this.studentForm.getSubmit().addActionListener(this);
@@ -369,6 +410,10 @@ public class FormGUI extends JFrame implements ActionListener {
 				runRules();
 				setTeacher();
 			}
+			break;
+
+		case "save":
+			saveInstances();
 			break;
 		default:
 			break;
